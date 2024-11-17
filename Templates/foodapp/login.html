@@ -1,31 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
+<html>
+<head>
   {% load static %}
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="{% static 'css/logstyle.css' %}">
-  </head>
-  <body>
-<div class="login-box" style="none">
-  <h1>Login</h1>
-  <form class="login-form" action="dologin" method="post">
-  {% csrf_token %}
-  <div class="textbox">
-    <i class="fas fa-user"></i>
-    <input type="text" name="userId" placeholder="Username">
-  </div>
+  <title>Login</title>
+  <link rel="stylesheet" href="{% static 'css/styleax.css' %}">
+  <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+</head>
+<body>
+  <form class="login-form" action="dologin" method="post" onsubmit="return confirmLogin()">
+    {% csrf_token %}
+    <h1>Login</h1>
+    
+    <div class="log-usertype">
+      <input type="radio" name="type" value="User" required> User
+    </div>
 
-  <div class="textbox">
-    <i class="fas fa-lock"></i>
-    <input type="password" name="userpass" placeholder="Password">
-  </div>
-	<div style="float: right;margin-right:0px;">
-	<input type="radio" name="type" value="User" checked="true">
-  <input type="radio" value="Admin" name="type">
-  </div>
-  <input type="submit" class="btn" style="color:white;" value="Log in">
+    <div class="log-txt-box">
+      <input type="text" name="userId" id="username" value="" required>
+      <span data-placeholder="Username"></span>
+    </div>
+
+    <div class="log-txt-box">
+      <input type="password" name="userpass" value="" required>
+      <span data-placeholder="Password"></span>
+    </div>
+
+    <input type="submit" class="log-btn" value="Login">
+
+    <div class="log-sign-btn">
+      Don't have account? <a href="#">Sign up</a></br></br>
+      <font color="red">{{ failure }}</font>
+    </div>
   </form>
-</div>
-  </body>
+
+  <script type="text/javascript">
+    // Add focus/blur effects for input fields
+    $(".log-txt-box input").on("focus", function () {
+      $(this).addClass("focus");
+    });
+
+    $(".log-txt-box input").on("blur", function () {
+      if ($(this).val() === "") {
+        $(this).removeClass("focus");
+      }
+    });
+
+    // Confirmation before form submission
+    function confirmLogin() {
+      const username = document.getElementById("username").value;
+      if (username) {
+        return confirm(`You are trying to login as ${username}. Do you want to proceed?`);
+      } else {
+        alert("Please enter a username before logging in.");
+        return false;
+      }
+    }
+  </script>
+</body>
 </html>
