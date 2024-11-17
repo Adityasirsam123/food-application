@@ -120,6 +120,13 @@
                      <p class="category">Category: {{ food.FoodCat }}</p>
                      <p class="price">Price: ${{ food.FoodPrice }}</p>
                      <img src="{{ food.FoodImage.url }}" alt="{{ food.FoodName }}" style="width: 150px; height: auto;">
+
+                     <form action="{% url 'addtocart' food.FoodId %}" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" name="food_id" value="{{ food.FoodId }}">
+                      <!--<input type="number" name="quantity" min="1" value="1" style="width: 60px;">-->
+                      <button type="submit" class="btn btn-primary">Add to Cart</button>
+                  </form>
                  </li>
              {% endfor %}
          </ul>
@@ -128,9 +135,8 @@
 {% else %}
  <p class="no-results">No results found for "{{ query }}".</p>
 {% endif %}
+</main>
 
-
-  </main>
 
 <footer>
     <div class="foot-con">
